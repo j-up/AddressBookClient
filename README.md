@@ -1,4 +1,6 @@
 # AddressBookClient
 
-1. AddressBook 서버 연동
+배포서버 연동
+
+AddressBook 서버 연동
 
