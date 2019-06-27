@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.Button
 import com.send.mst.addressbook.common.network.api.AddressBookAPI
 import com.send.mst.addressbook.common.utils.AppProp
-import com.send.mst.addressbook.common.utils.PushUtil
+import com.send.mst.addressbook.common.utils.Utils
 import com.send.mst.addressbook.domain.vo.addressBook.AddressBookListVO
 import com.send.mst.addressbook.domain.vo.addressBook.AddressBookVO
 import retrofit2.Call
@@ -16,7 +16,7 @@ import retrofit2.Response
 
 /**
  * @author JiMinLee
- * @desc 주소록 업로드/다운로드를 할 수 있는 액티비티
+ * @description 주소록 업로드/다운로드를 할 수 있는 액티비티
  **/
 
 class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
@@ -46,13 +46,15 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
         AppProp.singletonObject.addressBookApi = AppProp.singletonObject.retrofit.let {
             it.create(AddressBookAPI::class.java)
         }
+        // Todo 진동알림
+        Utils.onVibe(applicationContext,100L)
 
         when(v.id) {
-            // Todo 진동알림
             R.id.button_upload -> {
 
             }
             R.id.button_download -> {
+                // Todo 다운중 프로그래스바 처리
                 AppProp.singletonObject.addressBookApi?.postAddressBook(dummyData)?.enqueue(object : Callback<AddressBookListVO> {
                     override fun onResponse(call: Call<AddressBookListVO>, response: Response<AddressBookListVO>) {
                         val addressBookListVo = response.body()
@@ -64,7 +66,7 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
                     }
 
                     override fun onFailure(call: Call<AddressBookListVO>, t: Throwable) {
-                        PushUtil.onUpdateError(applicationContext,TAG,"연결 실패",t.message.toString())
+                        Utils.onUpdateError(applicationContext,TAG,"연결 실패",t.message.toString())
                     }
                 })
             }
