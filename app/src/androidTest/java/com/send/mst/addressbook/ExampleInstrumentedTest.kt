@@ -1,4 +1,4 @@
-package com.send.mst.addressbookclient
+package com.send.mst.addressbook
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
