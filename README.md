@@ -1,6 +1,3 @@
 # AddressBookClient
 
-배포서버 연동
-
-AddressBook 서버 연동
-
+주소록 백업 및 다운 어플
