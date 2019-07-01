@@ -23,12 +23,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
     lateinit var signUpButton: Button
     lateinit var naverLoginButton: ImageButton
 
-    val myDialog=MyDialog()
-    lateinit var builder:AlertDialog.Builder
-    lateinit var dialogView:View
-    lateinit var dialogInputEmailEditText:EditText
-    lateinit var dialogInputPwEditText:EditText
-    lateinit var dialogInputPw2EditText:EditText
+    val myDialog = MyDialog()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
