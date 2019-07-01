@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import com.send.mst.addressbook.common.network.api.AddressBookAPI
+import com.send.mst.addressbook.common.network.api.addrssBook.AddressBookAPI
 import com.send.mst.addressbook.common.utils.AppProp
 import com.send.mst.addressbook.common.utils.Utils
 import com.send.mst.addressbook.domain.vo.addressBook.AddressBookListVO
@@ -23,13 +23,8 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
     val TAG = this.javaClass.toString()
     lateinit var addressUpLoadButton: Button
     lateinit var addressDownloadButton: Button
-    val dummyData = AddressBookVO().apply {
-        id="6"
-        name=""
-        phone=""
-        userGroup=""
-        bookmark=""
-    }
+    val dummyData = AddressBookVO("6","","","","")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +41,6 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
         AppProp.singletonObject.addressBookApi = AppProp.singletonObject.retrofit.let {
             it.create(AddressBookAPI::class.java)
         }
-        // Todo 진동알림
         Utils.onVibe(applicationContext,100L)
 
         when(v.id) {
@@ -55,18 +49,19 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.button_download -> {
                 // Todo 다운중 프로그래스바 처리
-                AppProp.singletonObject.addressBookApi?.postAddressBook(dummyData)?.enqueue(object : Callback<AddressBookListVO> {
+                AppProp.singletonObject.addressBookApi?.getAddressBook(dummyData)?.enqueue(object : Callback<AddressBookListVO> {
                     override fun onResponse(call: Call<AddressBookListVO>, response: Response<AddressBookListVO>) {
-                        val addressBookListVo = response.body()
-                        addressBookListVo.let {
-                            for(addressBookVo in it!!.addressBookListVo) {
+                        val addressBookListVo = response.body()?.addressBookListVo
+                        addressBookListVo?.let {
+                            for(addressBookVo in it) {
                                 Log.d(TAG,addressBookVo.toAllString())
                             }
+
                         }
                     }
 
                     override fun onFailure(call: Call<AddressBookListVO>, t: Throwable) {
-                        Utils.onUpdateError(applicationContext,TAG,"연결 실패",t.message.toString())
+                        Utils.showMessage(applicationContext,TAG,"연결 실패",t.message.toString())
                     }
                 })
             }

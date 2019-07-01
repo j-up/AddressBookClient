@@ -1,4 +1,4 @@
-package com.send.mst.addressbook.common.network.api
+package com.send.mst.addressbook.common.network.api.addrssBook
 
 import com.send.mst.addressbook.domain.vo.addressBook.AddressBookListVO
 import com.send.mst.addressbook.domain.vo.addressBook.AddressBookVO
@@ -19,5 +19,5 @@ interface AddressBookAPI {
     * @description: 유저의 주소록 다운
     **/
     @POST("/addressBook/search")
-    fun postAddressBook(@Body addressBookVO: AddressBookVO) : Call<AddressBookListVO>
+    fun getAddressBook(@Body addressBookVO: AddressBookVO) : Call<AddressBookListVO>
 }

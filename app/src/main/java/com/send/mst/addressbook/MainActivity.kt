@@ -3,9 +3,13 @@ package com.send.mst.addressbook
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
+import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
+import com.send.mst.addressbook.common.utils.MyDialog
 
 /**
  * @author: JiMinLee
@@ -14,9 +18,17 @@ import android.widget.ImageButton
 
 class MainActivity : AppCompatActivity(),View.OnClickListener  {
     val TAG = this.javaClass.toString()
+
     lateinit var loginButton: Button
     lateinit var signUpButton: Button
     lateinit var naverLoginButton: ImageButton
+
+    val myDialog=MyDialog()
+    lateinit var builder:AlertDialog.Builder
+    lateinit var dialogView:View
+    lateinit var dialogInputEmailEditText:EditText
+    lateinit var dialogInputPwEditText:EditText
+    lateinit var dialogInputPw2EditText:EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +54,17 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
                 //ToDo 로그인처리
                 intent= Intent(this, AddressBookUpDownActivity::class.java)
                 startActivity(intent)
-                this.finish()
             }
 
             R.id.button_signUp -> {
+
+                myDialog.createCustomDialog(this,R.layout.custom_dialog_signup)
                 //Todo 회원가입처리
+                // 1. 가입처리
+                // 2. 아이디 중복체크
+                // 3. 비밀번호 암호화
+
+
             }
 
             R.id.button_naverLogin -> {
