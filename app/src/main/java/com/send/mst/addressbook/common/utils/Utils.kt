@@ -5,6 +5,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
 import android.widget.Toast
+import java.util.regex.Pattern
 
 /**
  * @author: JiMinLee
@@ -19,9 +20,9 @@ class Utils() {
          * @author: JiMinLee
          * @param: context:Context, 로그 태그:String, 사용자에게 보여줄 텍스트:String, 로그에 기록할 텍스트:String
          * @return:
-         * @description: 에러가 날경우 메시지를 보여주고 로그를 기록
+         * @description: 메시지를 보여주고 로그를 기록
          **/
-        fun onUpdateError(context: Context, TAG: String, showText: String, logText: String) {
+        fun showMessage(context: Context, TAG: String, showText: String, logText: String) {
             Toast.makeText(context,showText, Toast.LENGTH_SHORT).show()
             Log.d(TAG,logText)
         }
@@ -38,5 +39,38 @@ class Utils() {
                 it?.vibrate(VibrationEffect.createOneShot(delay,VibrationEffect.DEFAULT_AMPLITUDE))
             }
         }
+
+        /**
+        * @author: JiMinLee
+        * @param: elements
+        * @return: Null여부 :boolean
+        * @description: 여러 아이템들중 Null이 있는지 체크
+        **/
+        fun <T> isNotNull(vararg elements: T): Boolean {
+            elements.forEach {
+                if (it == null) {
+                    return false
+                }
+            }
+            return true
+        }
+
+        /**
+        * @author: JiMinLee
+        * @param: email:String
+        * @return: boolean
+        * @description: param의 값이 email형식이 맞는지 테스트
+        **/
+        fun isValidEmail(email: String): Boolean {
+            var err = false
+            val regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$"
+            val p = Pattern.compile(regex)
+            val m = p.matcher(email)
+            if (m.matches()) {
+                err = true
+            }
+            return err
+        }
+
     }
 }
