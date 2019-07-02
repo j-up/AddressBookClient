@@ -15,6 +15,15 @@ import java.util.regex.Pattern
 class Utils() {
 
     companion object{
+        /**
+         * @author: JiMinLee
+         * @param: context:Context, 로그 태그:String, 사용자에게 보여줄 텍스트와 로그에 기록할 텍스트:String
+         * @description: 메시지를 보여주고 로그를 기록
+         **/
+        fun showMessage(context: Context, tag: String, text: String) {
+            Toast.makeText(context,text, Toast.LENGTH_SHORT).show()
+            Log.d(tag,text)
+        }
 
         /**
          * @author: JiMinLee
@@ -22,9 +31,9 @@ class Utils() {
          * @return:
          * @description: 메시지를 보여주고 로그를 기록
          **/
-        fun showMessage(context: Context, TAG: String, showText: String, logText: String) {
+        fun showMessage(context: Context, tag: String, showText: String, logText: String) {
             Toast.makeText(context,showText, Toast.LENGTH_SHORT).show()
-            Log.d(TAG,logText)
+            Log.d(tag,logText)
         }
 
         /**
@@ -34,8 +43,8 @@ class Utils() {
          * @description: 진동시간만큼 진동을 울리게함
          **/
         fun onVibe(context: Context,delay: Long) {
-            AppProp.singletonObject.vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            AppProp.singletonObject.vibrator.let {
+            AppProp.SingletonObject.vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            AppProp.SingletonObject.vibrator.let {
                 it?.vibrate(VibrationEffect.createOneShot(delay,VibrationEffect.DEFAULT_AMPLITUDE))
             }
         }
@@ -44,7 +53,7 @@ class Utils() {
         * @author: JiMinLee
         * @param: elements
         * @return: Null여부 :boolean
-        * @description: 여러 아이템들중 Null이 있는지
+        * @description: 여러 아이템들중 Null 있는지
         **/
         fun <T> isNullItems(vararg elements: T): Boolean {
             elements.forEach {
@@ -59,7 +68,7 @@ class Utils() {
          * @author: JiMinLee
          * @param: elements
          * @return: 공백여부 :boolean
-         * @description: 여러 아이템들중 Empty가 있는지
+         * @description: 여러 아이템들중 Empty 있는지
          **/
         fun isEmptyItems(vararg elements: String): Boolean {
             elements.forEach {

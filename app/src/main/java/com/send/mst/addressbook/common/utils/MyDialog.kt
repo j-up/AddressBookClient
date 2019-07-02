@@ -25,11 +25,11 @@ import retrofit2.Response
  **/
 
 class MyDialog {
-    val TAG = this.javaClass.toString()
-    var dialog:Dialog? = null
+    private val tag = this.javaClass.toString()
+    private var dialog:Dialog? = null
 
-    var isExists:Boolean= true
-    var isEmail:Boolean = false
+    private var isExists:Boolean= true
+    private var isEmail:Boolean = false
 
         /**
          * @author: JiMinLee
@@ -63,9 +63,6 @@ class MyDialog {
             }
         }
 
-
-
-
     /**
     * @author: JiMinLee
     * @param: dialog
@@ -90,23 +87,23 @@ class MyDialog {
             inputEmail?.let { email -> isEmail=isValidEmail(email) }
 
             if (!isEmail) {
-                showMessage(dialog.context,TAG,"올바른 email 형식을 입력하세요","Is not email")
+                showMessage(dialog.context,tag,AppProp.STATUS_MESSAGE_IS_NOT_EMAIL.value)
                 return@setOnClickListener
             }
 
             if(false) {
                 // Todo 중복검사
-                showMessage(dialog.context,TAG,"이미 사용중인 계정입니다","email is exists")
+                showMessage(dialog.context,tag,AppProp.STATUS_MESSAGE_ALREADY_EXISTS_EMAIL.value)
             } else {
                 isExists = false
                 dialogInputEmailEditText.isEnabled=false
                 dialogInputEmailEditText.background=null
 
-                showMessage(dialog.context,TAG,"사용 가능한 계정입니다","email is pass")
+                showMessage(dialog.context,tag,AppProp.STATUS_MESSAGE_POSSIBLE_EMAIL.value)
                 dialogInputExistsButton.visibility = View.INVISIBLE
             }
         }
-        // 회원가입
+        // 회원가입버튼
         dialogInputSignUpButton.setOnClickListener {
             Utils.onVibe(dialog.context,100L)
             val inputEmail:String = dialogInputEmailEditText.text?.toString()?:""
@@ -117,30 +114,31 @@ class MyDialog {
                 return@setOnClickListener
             }
 
-            Log.d(TAG,dialogInputEmailEditText.text.toString())
-            Log.d(TAG,dialogInputPwEditText.text.toString())
-            Log.d(TAG,dialogInputPw2EditText.text.toString())
+            Log.d(tag,dialogInputEmailEditText.text.toString())
+            Log.d(tag,dialogInputPwEditText.text.toString())
+            Log.d(tag,dialogInputPw2EditText.text.toString())
 
-            val userVo = UserVO(inputEmail,inputPw)
-            AppProp.singletonObject.userApi = AppProp.singletonObject.retrofit.let {
+            AppProp.SingletonObject.userVo = UserVO(inputEmail,inputPw)
+
+            AppProp.SingletonObject.userApi = AppProp.SingletonObject.retrofit.let {
                 it.create(UserAPI::class.java)
             }
             val responseTask:(response: Response<Int>) -> Unit = {
-                it.body()?:showMessage(dialog.context, TAG, "가입 실패", "HTTP Code: ${it.raw().code()}")
+                it.body()?:showMessage(dialog.context, tag, AppProp.STATUS_MESSAGE_SING_UP_FAIL.value, "HTTP Code: ${it.raw().code()}")
 
                 it.body().let{ body ->
-                    Log.d(TAG,"body: ${body.toString()}")
-                    if(body==1) {
-                        showMessage(dialog.context, TAG, "회원가입 완료", "User signUp success")
+                    Log.d(tag,"body: ${body.toString()}")
+                    if(body==AppAropInt.CODE_SING_UP_SUCCESS.value) {
+                        showMessage(dialog.context, tag, AppProp.STATUS_MESSAGE_SING_UP_SUCCESS.value, "HTTP Code: ${it.raw().code()}")
                     }
                 }
                 dialog.dismiss()
             }
 
-            AppProp.singletonObject.userApi?.signupPost(userVo)?.enqueue(
+            AppProp.SingletonObject.userApi?.signUpPost(AppProp.SingletonObject.userVo!!)?.enqueue(
                 CallBackImpl(
                     dialog.context,
-                    TAG,
+                    tag,
                     responseTask
                 )
             )
@@ -151,19 +149,25 @@ class MyDialog {
         }
     }
 
+    /**
+    * @author: JiMinLee
+    * @param: inputEmail:String,inputPw:String,inputPw2:String,dialogContext:Context
+    * @return: Boolean
+    * @description: 입력 값 유효성 검사
+    **/
     private fun inputCheck(inputEmail:String,inputPw:String,inputPw2:String,dialogContext:Context):Boolean {
         if(isNullItems(inputEmail,inputPw,inputPw2) && isEmptyItems(inputEmail,inputPw,inputPw2)) {
-            showMessage(dialogContext,TAG,"공백을 입력해주세요","Input is null")
+            showMessage(dialogContext,tag,AppProp.STATUS_MESSAGE_INPUT_IS_NULL.value)
             return false
         }
 
         if (isExists) {
-            showMessage(dialogContext,TAG,"중복 검사를 실행하세요","중복검사 미실행 ")
+            showMessage(dialogContext,tag, AppProp.STATUS_MESSAGE_ALREADY_EXISTS_NO_CHECK.value)
             return false
         }
 
         if(!inputPw.equals(inputPw2)) {
-            showMessage(dialogContext,TAG,"비밀번호 불일치","")
+            showMessage(dialogContext,tag,AppProp.STATUS_MESSAGE_PASSWORD_NOT_PAIR.value)
             return false
         }
 

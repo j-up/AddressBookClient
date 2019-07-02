@@ -3,11 +3,8 @@ package com.send.mst.addressbook
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageButton
 import com.send.mst.addressbook.common.utils.MyDialog
 
@@ -17,11 +14,10 @@ import com.send.mst.addressbook.common.utils.MyDialog
  **/
 
 class MainActivity : AppCompatActivity(),View.OnClickListener  {
-    val TAG = this.javaClass.toString()
-
-    lateinit var loginButton: Button
-    lateinit var signUpButton: Button
-    lateinit var naverLoginButton: ImageButton
+    private val tag = this.javaClass.toString()
+    private lateinit var loginButton: Button
+    private lateinit var signUpButton: Button
+    private lateinit var naverLoginButton: ImageButton
 
     val myDialog = MyDialog()
 
@@ -36,8 +32,6 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
         loginButton.setOnClickListener(this)
         signUpButton.setOnClickListener(this)
         naverLoginButton.setOnClickListener(this)
-
-
     }
 
     override fun onClick(v: View) {
@@ -52,7 +46,6 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
             }
 
             R.id.button_signUp -> {
-
                 myDialog.createCustomDialog(this,R.layout.custom_dialog_signup)
                 //Todo 회원가입처리
                 // 1. 가입처리

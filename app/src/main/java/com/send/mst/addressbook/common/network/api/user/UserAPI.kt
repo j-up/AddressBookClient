@@ -16,6 +16,6 @@ interface UserAPI {
      * @return: Int
      * @description: 회원가입
      **/
-    @POST("/signup")
-    fun signupPost(@Body userVO: UserVO) : Call<Int>
+    @POST("/signUp")
+    fun signUpPost(@Body userVO: UserVO) : Call<Int>
 }

@@ -19,10 +19,10 @@ import retrofit2.Response
  **/
 
 class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
-    val TAG = this.javaClass.toString()
-    lateinit var addressUpLoadButton: Button
-    lateinit var addressDownloadButton: Button
-    val dummyData = AddressBookVO("6","","","","")
+    private val tag = this.javaClass.toString()
+    private lateinit var addressUpLoadButton: Button
+    private lateinit var addressDownloadButton: Button
+    private val dummyData = AddressBookVO("6","","","","")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +36,9 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
         addressDownloadButton.setOnClickListener(this)
     }
 
+
     override fun onClick(v: View) {
-        AppProp.singletonObject.addressBookApi = AppProp.singletonObject.retrofit.let {
+        AppProp.SingletonObject.addressBookApi = AppProp.SingletonObject.retrofit.let {
             it.create(AddressBookAPI::class.java)
         }
         Utils.onVibe(applicationContext,100L)
@@ -46,26 +47,26 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
             R.id.button_upload -> {
 
             }
-            R.id.button_download -> {
 
+            R.id.button_download -> {
                 // Todo 다운중 프로그래스바 처리
                 val responseTask:(response: Response<AddressBookListVO>) -> Unit = {
                     it.body()?.addressBookListVo?.let{ addressBookVoArray ->
                         for(addressBookVo in addressBookVoArray) {
-                            Log.d(TAG,addressBookVo.toAllString())
+                            Log.d(tag,addressBookVo.toAllString())
                         }
                     }
                 }
 
-                AppProp.singletonObject.addressBookApi?.getAddressBook(dummyData)?.enqueue(
+                AppProp.SingletonObject.addressBookApi?.getAddressBook(dummyData)?.enqueue(
                     CallBackImpl(
                         this,
-                        TAG,
+                        tag,
                         responseTask
                     )
                 )
-
             }
         }
     }
+
 }
