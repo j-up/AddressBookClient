@@ -2,12 +2,13 @@ package com.send.mst.addressbook.common.utils
 
 import android.os.Vibrator
 import com.send.mst.addressbook.common.network.api.addrssBook.AddressBookAPI
+import com.send.mst.addressbook.common.network.api.user.UserAPI
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * @author: JiMinLee
- * @description: 자주사용되는 정보를 모아놓은 클래스
+ * @description: 자주사용되는 객체(prop)를 모아놓은 클래스
  **/
 
 enum class AppProp(val value: String) {
@@ -19,6 +20,7 @@ enum class AppProp(val value: String) {
         val retrofit: Retrofit
         var vibrator:Vibrator? = null
         var addressBookApi: AddressBookAPI? = null
+        var userApi: UserAPI? = null
         init {
             retrofit = retrofit2.Retrofit.Builder()
                 .baseUrl(AppProp.SERVER_ADDR.value)

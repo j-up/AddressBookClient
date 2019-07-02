@@ -18,11 +18,7 @@ class CallBackImpl<T>(private val context: Context, private val TAG:String,
         }
 
         override fun onFailure(call: Call<T>, t: Throwable) {
-            Utils.showMessage(
-                context,
-                TAG,
-                "연결 실패",
-                t.message.toString()
+            Utils.showMessage(context, TAG, "연결 실패", t.message.toString()
             )
         }
 }

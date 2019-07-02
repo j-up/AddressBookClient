@@ -44,15 +44,30 @@ class Utils() {
         * @author: JiMinLee
         * @param: elements
         * @return: Null여부 :boolean
-        * @description: 여러 아이템들중 Null이 있는지 체크
+        * @description: 여러 아이템들중 Null이 있는지
         **/
-        fun <T> isNotNull(vararg elements: T): Boolean {
+        fun <T> isNullItems(vararg elements: T): Boolean {
             elements.forEach {
                 if (it == null) {
-                    return false
+                    return true
                 }
             }
-            return true
+            return false
+        }
+
+        /**
+         * @author: JiMinLee
+         * @param: elements
+         * @return: 공백여부 :boolean
+         * @description: 여러 아이템들중 Empty가 있는지
+         **/
+        fun isEmptyItems(vararg elements: String): Boolean {
+            elements.forEach {
+                if (it.isEmpty()) {
+                    return true
+                }
+            }
+            return false
         }
 
         /**

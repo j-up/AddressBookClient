@@ -47,6 +47,7 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
 
             }
             R.id.button_download -> {
+
                 // Todo 다운중 프로그래스바 처리
                 val responseTask:(response: Response<AddressBookListVO>) -> Unit = {
                     it.body()?.addressBookListVo?.let{ addressBookVoArray ->
