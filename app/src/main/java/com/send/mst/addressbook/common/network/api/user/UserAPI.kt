@@ -10,6 +10,7 @@ import retrofit2.http.POST
  * @desc
  **/
 interface UserAPI {
+
     /**
      * @author: JiMinLee
      * @param: UserVO
@@ -18,4 +19,13 @@ interface UserAPI {
      **/
     @POST("/signUp")
     fun signUpPost(@Body userVO: UserVO) : Call<Int>
+
+    /**
+    * @author: JiMinLee
+    * @param: UserVO
+    * @return: Int
+    * @description: 이메일 중복검사
+    **/
+    @POST("/id/check/")
+    fun idCheckPost(@Body userVO: UserVO) : Call<Int>
 }

@@ -23,6 +23,7 @@ enum class AppProp(val value: String) {
     STATUS_MESSAGE_ALREADY_EXISTS_EMAIL("이미 사용중인 계정입니다"),
     STATUS_MESSAGE_IS_NOT_EMAIL("올바른 email 형식을 입력하세요"),
     STATUS_MESSAGE_POSSIBLE_EMAIL("사용 가능한 계정입니다"),
+    STATUS_MESSAGE_INTERNAL_SERVER_ERROR("서버 에러"),
     STATUS_MESSAGE_CONNECT_FAIL("연결 실패");
 
     // 싱글톤 객체

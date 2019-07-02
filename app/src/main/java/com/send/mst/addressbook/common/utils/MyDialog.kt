@@ -1,17 +1,20 @@
 package com.send.mst.addressbook.common.utils
 
+import com.send.mst.addressbook.R
 import android.app.Dialog
 import android.content.Context
 import android.util.Log
-import android.view.Window
+
 import android.widget.Button
 import android.widget.EditText
-import com.send.mst.addressbook.R
+
 import android.view.WindowManager
+import android.view.View
+import android.view.Window
+
 import com.send.mst.addressbook.common.utils.Utils.Companion.isValidEmail
 import com.send.mst.addressbook.common.utils.Utils.Companion.showMessage
 import com.send.mst.addressbook.domain.vo.user.UserVO
-import android.view.View
 import com.send.mst.addressbook.common.network.CallBackImpl
 import com.send.mst.addressbook.common.network.api.user.UserAPI
 import com.send.mst.addressbook.common.utils.Utils.Companion.isEmptyItems
@@ -44,10 +47,12 @@ class MyDialog {
                 it.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 it.setContentView(resId)
 
-                val lp = WindowManager.LayoutParams()
-                lp.copyFrom(it.window.attributes)
-                lp.width = WindowManager.LayoutParams.MATCH_PARENT
-                lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+                val lp = WindowManager.LayoutParams().apply {
+                    copyFrom(it.window.attributes)
+                    width = WindowManager.LayoutParams.MATCH_PARENT
+                    height = WindowManager.LayoutParams.WRAP_CONTENT
+                }
+
                 val window = it.window
                 window.attributes = lp
 
@@ -80,7 +85,11 @@ class MyDialog {
         isExists= true
         isEmail = false
 
-        // 중복검사
+        AppProp.SingletonObject.userApi = AppProp.SingletonObject.retrofit.let {
+            it.create(UserAPI::class.java)
+        }
+
+        // 중복검사버튼
         dialogInputExistsButton.setOnClickListener {
             Utils.onVibe(dialog.context,100L)
             val inputEmail:String? = dialogInputEmailEditText.text.toString()
@@ -91,18 +100,37 @@ class MyDialog {
                 return@setOnClickListener
             }
 
-            if(false) {
-                // Todo 중복검사
-                showMessage(dialog.context,tag,AppProp.STATUS_MESSAGE_ALREADY_EXISTS_EMAIL.value)
-            } else {
-                isExists = false
-                dialogInputEmailEditText.isEnabled=false
-                dialogInputEmailEditText.background=null
+            AppProp.SingletonObject.userVo = UserVO(inputEmail,"")
 
-                showMessage(dialog.context,tag,AppProp.STATUS_MESSAGE_POSSIBLE_EMAIL.value)
-                dialogInputExistsButton.visibility = View.INVISIBLE
+            val responseTask:(response: Response<Int>) -> Unit = {
+                it.body()?:showMessage(dialog.context, tag, AppProp.STATUS_MESSAGE_INTERNAL_SERVER_ERROR.value, "HTTP Code: ${it.raw().code()}")
+
+                it.body().let{ body ->
+                    Log.d(tag,"body: ${body.toString()}")
+                    // 중복된 아이디가 없을경우
+                    if(body==0) {
+                        isExists=false
+                        dialogInputEmailEditText.isEnabled=false
+                        dialogInputEmailEditText.background=null
+
+                        showMessage(dialog.context,tag,AppProp.STATUS_MESSAGE_POSSIBLE_EMAIL.value)
+                        dialogInputExistsButton.visibility = View.INVISIBLE
+                    } else {
+                        showMessage(dialog.context,tag,AppProp.STATUS_MESSAGE_ALREADY_EXISTS_EMAIL.value)
+                    }
+                }
             }
+
+            AppProp.SingletonObject.userApi?.idCheckPost(AppProp.SingletonObject.userVo!!)?.enqueue(
+                CallBackImpl(
+                    dialog.context,
+                    tag,
+                    responseTask
+                )
+            )
+
         }
+
         // 회원가입버튼
         dialogInputSignUpButton.setOnClickListener {
             Utils.onVibe(dialog.context,100L)
@@ -114,15 +142,8 @@ class MyDialog {
                 return@setOnClickListener
             }
 
-            Log.d(tag,dialogInputEmailEditText.text.toString())
-            Log.d(tag,dialogInputPwEditText.text.toString())
-            Log.d(tag,dialogInputPw2EditText.text.toString())
-
             AppProp.SingletonObject.userVo = UserVO(inputEmail,inputPw)
 
-            AppProp.SingletonObject.userApi = AppProp.SingletonObject.retrofit.let {
-                it.create(UserAPI::class.java)
-            }
             val responseTask:(response: Response<Int>) -> Unit = {
                 it.body()?:showMessage(dialog.context, tag, AppProp.STATUS_MESSAGE_SING_UP_FAIL.value, "HTTP Code: ${it.raw().code()}")
 
@@ -144,6 +165,7 @@ class MyDialog {
             )
         }
 
+        // 취소버튼
         dialogInputCancelButton.setOnClickListener {
             dialog.dismiss()
         }
@@ -153,10 +175,10 @@ class MyDialog {
     * @author: JiMinLee
     * @param: inputEmail:String,inputPw:String,inputPw2:String,dialogContext:Context
     * @return: Boolean
-    * @description: 입력 값 유효성 검사
+    * @description: 입력 값 유효성 처리
     **/
     private fun inputCheck(inputEmail:String,inputPw:String,inputPw2:String,dialogContext:Context):Boolean {
-        if(isNullItems(inputEmail,inputPw,inputPw2) && isEmptyItems(inputEmail,inputPw,inputPw2)) {
+        if(isNullItems(inputEmail,inputPw,inputPw2) || isEmptyItems(inputEmail,inputPw,inputPw2)) {
             showMessage(dialogContext,tag,AppProp.STATUS_MESSAGE_INPUT_IS_NULL.value)
             return false
         }
