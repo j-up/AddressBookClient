@@ -18,10 +18,6 @@ interface UserAPI {
      * @return: Int
      * @description: 회원가입
      **/
-    @Headers(
-        "Authorization: Basic amltaW46amltaW4x",
-        "Content-Type: application/json"
-    )
     @POST("/signUp")
     fun signUpPost(@Body userVO: UserVO) : Call<Int>
 
@@ -31,10 +27,11 @@ interface UserAPI {
      * @return: Int
      * @description: 이메일 중복검사
      **/
+    /*
     @Headers(
         "Authorization: Basic amltaW46amltaW4x",
         "Content-Type: application/json"
-    )
+    ) */
     @POST("/id/check/")
     fun idCheckPost(@Body userVO: UserVO) : Call<Int>
 }

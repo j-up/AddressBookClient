@@ -3,7 +3,11 @@ package com.send.mst.addressbook.common.utils
 import android.os.Vibrator
 import com.send.mst.addressbook.common.network.api.addrssBook.AddressBookAPI
 import com.send.mst.addressbook.common.network.api.user.UserAPI
+import com.send.mst.addressbook.common.network.interceptor.RetrofitInterceptor
 import com.send.mst.addressbook.domain.vo.user.UserVO
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -33,10 +37,19 @@ enum class AppProp(val value: String) {
         var addressBookApi: AddressBookAPI? = null
         var userApi: UserAPI? = null
         var userVo: UserVO? = null
+
+        val client: OkHttpClient = OkHttpClient().newBuilder().addInterceptor{
+            val builder: Request.Builder = it.request().newBuilder()
+            builder.addHeader("Authorization","Basic amltaW46amltaW4x")
+            builder.addHeader("Content-Type","application/json")
+            it.proceed(builder.build())
+        }.build()
+
         init {
             retrofit = retrofit2.Retrofit.Builder()
                 .baseUrl(AppProp.SERVER_ADDR.value)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build()
         }
     }
