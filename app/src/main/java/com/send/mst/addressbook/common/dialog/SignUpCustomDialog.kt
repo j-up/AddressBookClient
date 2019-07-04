@@ -9,7 +9,7 @@ import android.widget.EditText
 import com.send.mst.addressbook.R
 import com.send.mst.addressbook.common.network.CallBackImpl
 import com.send.mst.addressbook.common.network.api.user.UserAPI
-import com.send.mst.addressbook.common.utils.AppAropInt
+import com.send.mst.addressbook.common.utils.AppPropInt
 import com.send.mst.addressbook.common.utils.AppProp
 import com.send.mst.addressbook.common.utils.Utils
 import com.send.mst.addressbook.domain.vo.user.UserVO
@@ -113,7 +113,7 @@ class SignUpCustomDialog(val dialog: Dialog) {
 
                 it.body().let { body ->
                     Log.d(tag, "body: ${body.toString()}")
-                    if (body == AppAropInt.CODE_SING_UP_SUCCESS.value) {
+                    if (body == AppPropInt.CODE_SING_UP_SUCCESS.value) {
                         Utils.showMessage(
                             dialog.context,
                             tag,

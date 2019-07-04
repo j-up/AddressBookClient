@@ -3,9 +3,7 @@ package com.send.mst.addressbook.common.utils
 import android.os.Vibrator
 import com.send.mst.addressbook.common.network.api.addrssBook.AddressBookAPI
 import com.send.mst.addressbook.common.network.api.user.UserAPI
-import com.send.mst.addressbook.common.network.interceptor.RetrofitInterceptor
 import com.send.mst.addressbook.domain.vo.user.UserVO
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
@@ -28,6 +26,8 @@ enum class AppProp(val value: String) {
     STATUS_MESSAGE_IS_NOT_EMAIL("올바른 email 형식을 입력하세요"),
     STATUS_MESSAGE_POSSIBLE_EMAIL("사용 가능한 계정입니다"),
     STATUS_MESSAGE_INTERNAL_SERVER_ERROR("서버 에러"),
+    STATUS_MESSAGE_LOGIN_SUCCESS("로그인 성공"),
+    STATUS_MESSAGE_LOGIN_FAIL("로그인 실패"),
     STATUS_MESSAGE_CONNECT_FAIL("연결 실패");
 
     // 싱글톤 객체
@@ -59,6 +59,9 @@ enum class AppProp(val value: String) {
 * @author: JiMinLee
 * @description: 상수(int)를 모아놓은 클래스
 **/
-enum class AppAropInt(val value: Int) {
-    CODE_SING_UP_SUCCESS(1)
+enum class AppPropInt(val value: Int) {
+    CODE_SING_UP_SUCCESS(1),
+    CODE_LOGIN_FAIL(0),
+    CODE_LOGIN_SUCCESS(1);
+
 }

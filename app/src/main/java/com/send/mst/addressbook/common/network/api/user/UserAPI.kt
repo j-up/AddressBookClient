@@ -3,7 +3,6 @@ package com.send.mst.addressbook.common.network.api.user
 import com.send.mst.addressbook.domain.vo.user.UserVO
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.Headers
 import retrofit2.http.POST
 
 /**
@@ -34,4 +33,7 @@ interface UserAPI {
     ) */
     @POST("/id/check/")
     fun idCheckPost(@Body userVO: UserVO) : Call<Int>
+
+    @POST("/login")
+    fun loginPost(@Body userVO: UserVO) : Call<Int>
 }
