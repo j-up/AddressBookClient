@@ -24,7 +24,6 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var addressDownloadButton: Button
     private val dummyData = AddressBookVO("6","","","","")
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_address_book_up_down)
