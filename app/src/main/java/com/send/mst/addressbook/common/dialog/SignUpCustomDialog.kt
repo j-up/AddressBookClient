@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import com.send.mst.addressbook.R
 import com.send.mst.addressbook.common.network.CallBackImpl
-import com.send.mst.addressbook.common.network.api.user.UserAPI
+import com.send.mst.addressbook.common.network.api.ServerAPI
 import com.send.mst.addressbook.common.utils.AppPropInt
 import com.send.mst.addressbook.common.utils.AppProp
 import com.send.mst.addressbook.common.utils.Utils
@@ -36,10 +36,6 @@ class SignUpCustomDialog(val dialog: Dialog) {
 
         isExists = true
         isEmail = false
-
-        AppProp.SingletonObject.userApi = AppProp.SingletonObject.retrofit.let {
-            it.create(UserAPI::class.java)
-        }
 
         // 중복검사버튼
         dialogInputExistsButton.setOnClickListener {
@@ -80,7 +76,7 @@ class SignUpCustomDialog(val dialog: Dialog) {
                 }
             }
 
-            AppProp.SingletonObject.userApi?.idCheckPost(AppProp.SingletonObject.userVo!!)?.enqueue(
+            AppProp.SingletonObject.serverApi?.idCheckPost(AppProp.SingletonObject.userVo!!)?.enqueue(
                 CallBackImpl(
                     dialog.context,
                     tag,
@@ -125,7 +121,7 @@ class SignUpCustomDialog(val dialog: Dialog) {
                 dialog.dismiss()
             }
 
-            AppProp.SingletonObject.userApi?.signUpPost(AppProp.SingletonObject.userVo!!)?.enqueue(
+            AppProp.SingletonObject.serverApi?.signUpPost(AppProp.SingletonObject.userVo!!)?.enqueue(
                 CallBackImpl(
                     dialog.context,
                     tag,

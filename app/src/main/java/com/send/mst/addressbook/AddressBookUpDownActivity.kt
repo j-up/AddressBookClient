@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import com.send.mst.addressbook.common.network.api.addrssBook.AddressBookAPI
 import com.send.mst.addressbook.common.utils.AppProp
 import com.send.mst.addressbook.common.network.CallBackImpl
+import com.send.mst.addressbook.common.network.api.ServerAPI
 import com.send.mst.addressbook.common.utils.Utils
 import com.send.mst.addressbook.domain.vo.addressBook.AddressBookListVO
 import com.send.mst.addressbook.domain.vo.addressBook.AddressBookVO
@@ -22,7 +22,7 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
     private val tag = this.javaClass.toString()
     private lateinit var addressUpLoadButton: Button
     private lateinit var addressDownloadButton: Button
-    private val dummyData = AddressBookVO("6","","","","")
+    private val dummyData = AddressBookVO("27","","","","")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +37,6 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
 
 
     override fun onClick(v: View) {
-        AppProp.SingletonObject.addressBookApi = AppProp.SingletonObject.retrofit.let {
-            it.create(AddressBookAPI::class.java)
-        }
         Utils.onVibe(applicationContext,100L)
 
         when(v.id) {
@@ -57,7 +54,7 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 }
 
-                AppProp.SingletonObject.addressBookApi?.getAddressBook(dummyData)?.enqueue(
+                AppProp.SingletonObject.serverApi?.getAddressBook(dummyData)?.enqueue(
                     CallBackImpl(
                         this,
                         tag,

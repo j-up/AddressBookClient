@@ -1,9 +1,7 @@
 package com.send.mst.addressbook.common.utils
 
-import android.content.SharedPreferences
 import android.os.Vibrator
-import com.send.mst.addressbook.common.network.api.addrssBook.AddressBookAPI
-import com.send.mst.addressbook.common.network.api.user.UserAPI
+import com.send.mst.addressbook.common.network.api.ServerAPI
 import com.send.mst.addressbook.common.network.interceptor.RetrofitInterceptor
 import com.send.mst.addressbook.domain.vo.user.UserVO
 import okhttp3.OkHttpClient
@@ -36,24 +34,21 @@ enum class AppProp(val value: String) {
     object SingletonObject {
         val retrofit: Retrofit
         var vibrator:Vibrator? = null
-        var addressBookApi: AddressBookAPI? = null
-        var userApi: UserAPI? = null
+        var serverApi: ServerAPI? = null
         var userVo: UserVO? = null
-        var prefs: SharedPreferences? = null
 
-        private var client: OkHttpClient = OkHttpClient()
-
-        var builder = OkHttpClient.Builder()
+        private val client = OkHttpClient.Builder()
             .addInterceptor(RetrofitInterceptor())
+            .build()
 
         init {
-            client= builder.build()
             retrofit = retrofit2.Retrofit.Builder()
                 .baseUrl(AppProp.SERVER_ADDR.value)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
-
                 .build()
+
+            serverApi = retrofit.create(ServerAPI::class.java)
         }
     }
 }

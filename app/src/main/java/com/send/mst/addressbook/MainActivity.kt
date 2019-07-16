@@ -1,7 +1,6 @@
 package com.send.mst.addressbook
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -11,11 +10,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import com.send.mst.addressbook.common.di.HelloRepository
+import com.send.mst.addressbook.common.di.MySimplePresenter
 import com.send.mst.addressbook.common.network.CallBackImpl
-import com.send.mst.addressbook.common.network.api.user.UserAPI
+import com.send.mst.addressbook.common.network.api.ServerAPI
 import com.send.mst.addressbook.common.utils.*
-import com.send.mst.addressbook.common.utils.AppProp.SingletonObject.prefs
 import com.send.mst.addressbook.domain.vo.user.UserVO
+import org.koin.android.ext.android.inject
 import retrofit2.Response
 
 /**
@@ -34,21 +35,22 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
     private lateinit var pwEditText: EditText
     private lateinit var naverLoginButton: ImageButton
 
+    val firstPresenter: MySimplePresenter by inject()
+    val firstPresenter2: HelloRepository by inject()
+    val utils: Utils by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        loginButton = findViewById(R.id.button_login) as Button
-        signUpButton = findViewById(R.id.button_signUp) as Button
-        naverLoginButton = findViewById(R.id.button_naverLogin) as ImageButton
-        idEditText = findViewById(R.id.editText_email) as EditText
-        pwEditText = findViewById(R.id.editText_pw) as EditText
+        loginButton = findViewById<Button>(R.id.button_login)
+        signUpButton = findViewById<Button>(R.id.button_signUp)
+        naverLoginButton = findViewById<ImageButton>(R.id.button_naverLogin) as ImageButton
+        idEditText = findViewById<EditText>(R.id.editText_email)
+        pwEditText = findViewById<EditText>(R.id.editText_pw)
 
         loginButton.setOnClickListener(this)
         signUpButton.setOnClickListener(this)
         naverLoginButton.setOnClickListener(this)
-
-        prefs = applicationContext.getSharedPreferences("PropFile", Context.MODE_PRIVATE)
 
         idEditText.setText("test@test.com")
         pwEditText.setText("test")
@@ -64,6 +66,9 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
             }
             false
         })
+        Log.d(tag,"ㅁMySimplePresenter: "+firstPresenter.sayHello())
+        Log.d(tag,"ㅁHelloRepositoryImpl: "+firstPresenter2.giveHello())
+
     }
 
     override fun onClick(v: View) {
@@ -96,9 +101,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
             return
         }
         AppProp.SingletonObject.userVo = UserVO(inputEmail, inputPw)
-        AppProp.SingletonObject.userApi = AppProp.SingletonObject.retrofit.let {
-            it.create(UserAPI::class.java)
-        }
+
         val responseTask: (response: Response<Int>) -> Unit = {
             if (it.raw().code() != 200) {
                 Utils.showMessage(
@@ -121,7 +124,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
                 }
             }
         }
-            AppProp.SingletonObject.userApi?.loginPost(AppProp.SingletonObject.userVo!!)?.enqueue(
+            AppProp.SingletonObject.serverApi?.loginPost(AppProp.SingletonObject.userVo!!)?.enqueue(
                 CallBackImpl(
                     this,
                     tag,
