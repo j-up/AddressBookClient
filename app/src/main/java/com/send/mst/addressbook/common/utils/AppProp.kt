@@ -6,6 +6,7 @@ import com.send.mst.addressbook.common.network.interceptor.RetrofitInterceptor
 import com.send.mst.addressbook.model.UserModel
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
@@ -30,29 +31,6 @@ enum class AppProp(val value: String) {
     STATUS_MESSAGE_LOGIN_SUCCESS("로그인 성공"),
     STATUS_MESSAGE_LOGIN_FAIL("로그인 실패"),
     STATUS_MESSAGE_CONNECT_FAIL("연결 실패");
-
-    // 싱글톤 객체
-    object SingletonObject {
-        val retrofit: Retrofit
-        var vibrator:Vibrator? = null
-        var apiServer: ApiServer? = null
-
-        lateinit var userModel: UserModel
-
-        private val client = OkHttpClient.Builder()
-            .addInterceptor(RetrofitInterceptor())
-            .build()
-
-        init {
-            retrofit = retrofit2.Retrofit.Builder()
-                .baseUrl(AppProp.SERVER_ADDR.value)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build()
-
-            apiServer = retrofit.create(ApiServer::class.java)
-        }
-    }
 }
 
 /**
@@ -61,6 +39,7 @@ enum class AppProp(val value: String) {
 **/
 enum class AppPropInt(val value: Int) {
     CODE_SING_UP_SUCCESS(1),
+    CODE_ID_CHECK_SUCCESS(0),
     CODE_LOGIN_FAIL(0),
     CODE_LOGIN_SUCCESS(1);
 

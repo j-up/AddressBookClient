@@ -3,6 +3,7 @@ package com.send.mst.addressbook.common.network.api
 import com.send.mst.addressbook.model.AddressBookListModel
 import com.send.mst.addressbook.model.AddressBookModel
 import com.send.mst.addressbook.model.UserModel
+import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -21,7 +22,7 @@ interface ApiServer {
      * @description: 회원가입
      **/
     @POST("/signUp")
-    fun signUpPost(@Body userVO: UserModel) : Call<Int>
+    fun signUpPost(@Body userModel: UserModel) : Single<Int>
 
     /**
      * @author: JiMinLee
@@ -35,7 +36,7 @@ interface ApiServer {
         "Content-Type: application/json"
     ) */
     @POST("/id/check/")
-    fun idCheckPost(@Body userVO: UserModel) : Call<Int>
+    fun idCheckPost(@Body userModel: UserModel) : Single<Int>
 
     /**
      * @author: JiMinLee
@@ -49,7 +50,7 @@ interface ApiServer {
         "Content-Type: application/json"
     ) */
     @POST("/login")
-    fun loginPost(@Body userVO: UserModel) : Call<Int>
+    fun loginPost(@Body userModel: UserModel) : Single<Int>
 
 
 

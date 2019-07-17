@@ -6,7 +6,7 @@ import android.content.Context
 
 import android.view.WindowManager
 import android.view.Window
-import com.send.mst.addressbook.common.dialog.SignUpCustomDialog
+import com.send.mst.addressbook.dialog.SignUpCustomDialog
 
 
 

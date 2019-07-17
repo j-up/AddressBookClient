@@ -43,8 +43,8 @@ class Utils() {
          * @description: 진동시간만큼 진동을 울리게함
          **/
         fun onVibe(context: Context,delay: Long) {
-            AppProp.SingletonObject.vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            AppProp.SingletonObject.vibrator.let {
+            SingletonObject.vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            SingletonObject.vibrator.let {
                 it?.vibrate(VibrationEffect.createOneShot(delay,VibrationEffect.DEFAULT_AMPLITUDE))
             }
         }
