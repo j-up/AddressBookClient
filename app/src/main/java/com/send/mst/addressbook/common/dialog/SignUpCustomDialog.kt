@@ -8,11 +8,10 @@ import android.widget.Button
 import android.widget.EditText
 import com.send.mst.addressbook.R
 import com.send.mst.addressbook.common.network.CallBackImpl
-import com.send.mst.addressbook.common.network.api.ServerAPI
 import com.send.mst.addressbook.common.utils.AppPropInt
 import com.send.mst.addressbook.common.utils.AppProp
 import com.send.mst.addressbook.common.utils.Utils
-import com.send.mst.addressbook.domain.vo.user.UserVO
+import com.send.mst.addressbook.model.UserModel
 import retrofit2.Response
 
 /**
@@ -40,7 +39,7 @@ class SignUpCustomDialog(val dialog: Dialog) {
         // 중복검사버튼
         dialogInputExistsButton.setOnClickListener {
             Utils.onVibe(dialog.context, 100L)
-            val inputEmail: String? = dialogInputEmailEditText.text.toString()
+            val inputEmail: String = dialogInputEmailEditText.text.toString()
             inputEmail?.let { email -> isEmail = Utils.isValidEmail(email) }
 
             if (!isEmail) {
@@ -48,7 +47,7 @@ class SignUpCustomDialog(val dialog: Dialog) {
                 return@setOnClickListener
             }
 
-            AppProp.SingletonObject.userVo = UserVO(inputEmail, "")
+            AppProp.SingletonObject.userModel = UserModel(inputEmail, "")
 
             val responseTask: (response: Response<Int>) -> Unit = {
                 if( it.raw().code()!=200) {
@@ -76,7 +75,7 @@ class SignUpCustomDialog(val dialog: Dialog) {
                 }
             }
 
-            AppProp.SingletonObject.serverApi?.idCheckPost(AppProp.SingletonObject.userVo!!)?.enqueue(
+            AppProp.SingletonObject.apiServer?.idCheckPost(AppProp.SingletonObject.userModel!!)?.enqueue(
                 CallBackImpl(
                     dialog.context,
                     tag,
@@ -97,7 +96,7 @@ class SignUpCustomDialog(val dialog: Dialog) {
                 return@setOnClickListener
             }
 
-            AppProp.SingletonObject.userVo = UserVO(inputEmail, inputPw)
+            AppProp.SingletonObject.userModel = UserModel(inputEmail, inputPw)
 
             val responseTask: (response: Response<Int>) -> Unit = {
                 it.body() ?: Utils.showMessage(
@@ -121,7 +120,7 @@ class SignUpCustomDialog(val dialog: Dialog) {
                 dialog.dismiss()
             }
 
-            AppProp.SingletonObject.serverApi?.signUpPost(AppProp.SingletonObject.userVo!!)?.enqueue(
+            AppProp.SingletonObject.apiServer?.signUpPost(AppProp.SingletonObject.userModel!!)?.enqueue(
                 CallBackImpl(
                     dialog.context,
                     tag,

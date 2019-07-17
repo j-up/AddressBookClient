@@ -1,8 +1,9 @@
-package com.send.mst.addressbook
+package com.send.mst.addressbook.view
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -10,13 +11,15 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import com.send.mst.addressbook.common.di.HelloRepository
-import com.send.mst.addressbook.common.di.MySimplePresenter
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import com.send.mst.addressbook.R
 import com.send.mst.addressbook.common.network.CallBackImpl
-import com.send.mst.addressbook.common.network.api.ServerAPI
 import com.send.mst.addressbook.common.utils.*
-import com.send.mst.addressbook.domain.vo.user.UserVO
-import org.koin.android.ext.android.inject
+import com.send.mst.addressbook.databinding.ActivityMainBinding
+import com.send.mst.addressbook.model.UserModel
+import com.send.mst.addressbook.viewmodel.MainViewModel
 import retrofit2.Response
 
 /**
@@ -29,31 +32,45 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
     private val myDialog = MyDialog()
     private val mainActivity:Activity = this
 
-    private lateinit var loginButton: Button
     private lateinit var signUpButton: Button
     private lateinit var idEditText: EditText
     private lateinit var pwEditText: EditText
     private lateinit var naverLoginButton: ImageButton
 
-    val firstPresenter: MySimplePresenter by inject()
-    val firstPresenter2: HelloRepository by inject()
-    val utils: Utils by inject()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        loginButton = findViewById<Button>(R.id.button_login)
-        signUpButton = findViewById<Button>(R.id.button_signUp)
-        naverLoginButton = findViewById<ImageButton>(R.id.button_naverLogin) as ImageButton
+        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val mainViewModel:MainViewModel = MainViewModel()
+
+        mainViewModel.onLoginClick.observe(this, Observer{
+            Toast.makeText(this,"클릭 " + it,Toast.LENGTH_SHORT).show()
+        })
+
+        mainViewModel.isLoginState.observe(this, Observer {
+            if(it) {
+                Toast.makeText(this, "로그인성공",Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Toast.makeText(this,"로그인성공",Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        mainViewModel.onSignUpClick.observe(this,Observer{
+            Toast.makeText(this,"클릭 " + it,Toast.LENGTH_SHORT).show()
+            //myDialog.createCustomDialog(this, R.layout.custom_dialog_signup)
+        })
+
+
+        binding.viewModel=mainViewModel
+        binding.setLifecycleOwner(this@MainActivity)
+
+
         idEditText = findViewById<EditText>(R.id.editText_email)
         pwEditText = findViewById<EditText>(R.id.editText_pw)
 
-        loginButton.setOnClickListener(this)
-        signUpButton.setOnClickListener(this)
-        naverLoginButton.setOnClickListener(this)
 
-        idEditText.setText("test@test.com")
-        pwEditText.setText("test")
+       // idEditText.setText("test@test.com")
+       // pwEditText.setText("test")
         pwEditText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 val inputEmail= idEditText.text.toString()
@@ -66,27 +83,20 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
             }
             false
         })
-        Log.d(tag,"ㅁMySimplePresenter: "+firstPresenter.sayHello())
-        Log.d(tag,"ㅁHelloRepositoryImpl: "+firstPresenter2.giveHello())
-
     }
 
     override fun onClick(v: View) {
         var intent: Intent
 
         when(v.id) {
+            /*
             R.id.button_login -> {
                 //ToDo 쿠키처리 -> sns 로그인 처리
-                val inputEmail= idEditText.text.toString()
-                val inputPw = pwEditText.text.toString()
-
-                doLogin(idEditText.text.toString(),pwEditText.text.toString())
-            }
 
             R.id.button_signUp -> {
-                myDialog.createCustomDialog(this,R.layout.custom_dialog_signup)
+                myDialog.createCustomDialog(this, R.layout.custom_dialog_signup)
             }
-
+*/
             R.id.button_naverLogin -> {
 
             }
@@ -100,7 +110,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
             Utils.showMessage(applicationContext, tag, AppProp.STATUS_MESSAGE_INPUT_IS_NULL.value)
             return
         }
-        AppProp.SingletonObject.userVo = UserVO(inputEmail, inputPw)
+        AppProp.SingletonObject.userModel = UserModel(inputEmail, inputPw)
 
         val responseTask: (response: Response<Int>) -> Unit = {
             if (it.raw().code() != 200) {
@@ -124,7 +134,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
                 }
             }
         }
-            AppProp.SingletonObject.serverApi?.loginPost(AppProp.SingletonObject.userVo!!)?.enqueue(
+            AppProp.SingletonObject.apiServer?.loginPost(AppProp.SingletonObject.userModel!!)?.enqueue(
                 CallBackImpl(
                     this,
                     tag,

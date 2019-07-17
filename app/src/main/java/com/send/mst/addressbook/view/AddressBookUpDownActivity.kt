@@ -1,16 +1,16 @@
-package com.send.mst.addressbook
+package com.send.mst.addressbook.view
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import com.send.mst.addressbook.R
 import com.send.mst.addressbook.common.utils.AppProp
 import com.send.mst.addressbook.common.network.CallBackImpl
-import com.send.mst.addressbook.common.network.api.ServerAPI
 import com.send.mst.addressbook.common.utils.Utils
-import com.send.mst.addressbook.domain.vo.addressBook.AddressBookListVO
-import com.send.mst.addressbook.domain.vo.addressBook.AddressBookVO
+import com.send.mst.addressbook.model.AddressBookListModel
+import com.send.mst.addressbook.model.AddressBookModel
 import retrofit2.Response
 
 /**
@@ -22,7 +22,7 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
     private val tag = this.javaClass.toString()
     private lateinit var addressUpLoadButton: Button
     private lateinit var addressDownloadButton: Button
-    private val dummyData = AddressBookVO("27","","","","")
+    private val dummyData = AddressBookModel("27", "", "", "", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,15 +46,15 @@ class AddressBookUpDownActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.button_download -> {
                 // Todo 다운중 프로그래스바 처리
-                val responseTask:(response: Response<AddressBookListVO>) -> Unit = {
-                    it.body()?.addressBookListVo?.let{ addressBookVoArray ->
-                        for(addressBookVo in addressBookVoArray) {
-                            Log.d(tag,addressBookVo.toAllString())
+                val responseTask:(response: Response<AddressBookListModel>) -> Unit = {
+                    it.body()?.addressBookListModel?.let{ addressBookModelArray ->
+                        for(addressBookModel in addressBookModelArray) {
+                            Log.d(tag,addressBookModel.toString())
                         }
                     }
                 }
 
-                AppProp.SingletonObject.serverApi?.getAddressBook(dummyData)?.enqueue(
+                AppProp.SingletonObject.apiServer?.getAddressBook(dummyData)?.enqueue(
                     CallBackImpl(
                         this,
                         tag,

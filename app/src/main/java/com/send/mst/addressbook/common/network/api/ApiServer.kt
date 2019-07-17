@@ -1,8 +1,8 @@
 package com.send.mst.addressbook.common.network.api
 
-import com.send.mst.addressbook.domain.vo.addressBook.AddressBookListVO
-import com.send.mst.addressbook.domain.vo.addressBook.AddressBookVO
-import com.send.mst.addressbook.domain.vo.user.UserVO
+import com.send.mst.addressbook.model.AddressBookListModel
+import com.send.mst.addressbook.model.AddressBookModel
+import com.send.mst.addressbook.model.UserModel
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -11,21 +11,21 @@ import retrofit2.http.POST
  * @author JiMinLee
  * @desc
  **/
-interface ServerAPI {
+interface ApiServer {
 
 
     /**
      * @author: JiMinLee
-     * @param: UserVO
+     * @param: UserModel
      * @return: Int
      * @description: 회원가입
      **/
     @POST("/signUp")
-    fun signUpPost(@Body userVO: UserVO) : Call<Int>
+    fun signUpPost(@Body userVO: UserModel) : Call<Int>
 
     /**
      * @author: JiMinLee
-     * @param: UserVO
+     * @param: UserModel
      * @return: Int
      * @description: 이메일 중복검사
      **/
@@ -35,11 +35,11 @@ interface ServerAPI {
         "Content-Type: application/json"
     ) */
     @POST("/id/check/")
-    fun idCheckPost(@Body userVO: UserVO) : Call<Int>
+    fun idCheckPost(@Body userVO: UserModel) : Call<Int>
 
     /**
      * @author: JiMinLee
-     * @param: UserVO
+     * @param: UserModel
      * @return: Int
      * @description: 로그인
      **/
@@ -49,7 +49,7 @@ interface ServerAPI {
         "Content-Type: application/json"
     ) */
     @POST("/login")
-    fun loginPost(@Body userVO: UserVO) : Call<Int>
+    fun loginPost(@Body userVO: UserModel) : Call<Int>
 
 
 
@@ -59,5 +59,5 @@ interface ServerAPI {
     주소록
      */
     @POST("/addressBook/search")
-    fun getAddressBook(@Body addressBookVO: AddressBookVO) : Call<AddressBookListVO>
+    fun getAddressBook(@Body addressBookModel: AddressBookModel) : Call<AddressBookListModel>
 }

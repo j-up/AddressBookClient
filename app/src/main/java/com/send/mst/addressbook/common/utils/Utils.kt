@@ -57,7 +57,7 @@ class Utils() {
         **/
         fun <T> isNullItems(vararg elements: T): Boolean {
             elements.forEach {
-                if (it == null) {
+                if (it == null || it.toString().equals("null") ) {
                     return true
                 }
             }
@@ -66,14 +66,16 @@ class Utils() {
 
         /**
          * @author: JiMinLee
-         * @param: elements
+         * @param: elements:String
          * @return: 공백여부 :boolean
          * @description: 여러 아이템들중 Empty 있는지
          **/
-        fun isEmptyItems(vararg elements: String): Boolean {
+        fun isEmptyItems(vararg elements: String?): Boolean {
             elements.forEach {
-                if (it.isEmpty()) {
-                    return true
+                if (it != null) {
+                    if (it.isEmpty()) {
+                        return true
+                    }
                 }
             }
             return false
@@ -95,5 +97,7 @@ class Utils() {
             }
             return err
         }
+
+
     }
 }

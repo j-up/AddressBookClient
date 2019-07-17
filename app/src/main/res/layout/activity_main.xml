@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+                name="viewModel"
+                type="com.send.mst.addressbook.viewmodel.MainViewModel"/>
+    </data>
+
+    <LinearLayout
+
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
 
     <ImageView
@@ -34,6 +43,7 @@
                 android:id="@+id/editText_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.editTextId}"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"/>
 
@@ -55,6 +65,7 @@
                 android:id="@+id/editText_pw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.editTextPw}"
                 android:inputType="textPassword">
         </EditText>
     </LinearLayout>
@@ -68,12 +79,14 @@
                 android:id="@+id/button_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.onLoginClick()}"
                 android:text="@string/login_button_text"/>
 
         <Button
                 android:id="@+id/button_signUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.onSignUpClick()}"
                 android:text="@string/signUp_button_text"/>
 
     </LinearLayout>
@@ -95,3 +108,4 @@
     </LinearLayout>
 
 </LinearLayout>
+</layout>

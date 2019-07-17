@@ -1,9 +1,9 @@
 package com.send.mst.addressbook.common.utils
 
 import android.os.Vibrator
-import com.send.mst.addressbook.common.network.api.ServerAPI
+import com.send.mst.addressbook.common.network.api.ApiServer
 import com.send.mst.addressbook.common.network.interceptor.RetrofitInterceptor
-import com.send.mst.addressbook.domain.vo.user.UserVO
+import com.send.mst.addressbook.model.UserModel
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,6 +17,7 @@ enum class AppProp(val value: String) {
 
     SERVER_ADDR("http://192.168.3.25:8080"),
 
+    HEADER_INTERCEPTOR("headerInterceptor"),
     STATUS_MESSAGE_SING_UP_SUCCESS("회원가입 성공"),
     STATUS_MESSAGE_INPUT_IS_NULL("공백을 입력해주세요"),
     STATUS_MESSAGE_ALREADY_EXISTS_NO_CHECK("중복 검사를 실행하세요"),
@@ -34,8 +35,9 @@ enum class AppProp(val value: String) {
     object SingletonObject {
         val retrofit: Retrofit
         var vibrator:Vibrator? = null
-        var serverApi: ServerAPI? = null
-        var userVo: UserVO? = null
+        var apiServer: ApiServer? = null
+
+        lateinit var userModel: UserModel
 
         private val client = OkHttpClient.Builder()
             .addInterceptor(RetrofitInterceptor())
@@ -48,7 +50,7 @@ enum class AppProp(val value: String) {
                 .client(client)
                 .build()
 
-            serverApi = retrofit.create(ServerAPI::class.java)
+            apiServer = retrofit.create(ApiServer::class.java)
         }
     }
 }
