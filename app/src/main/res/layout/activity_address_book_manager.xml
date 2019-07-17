@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<layout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+                name="addressBookManagerViewModel"
+                type="com.send.mst.addressbook.viewmodel.AddressBookManagerViewModel"/>
+    </data>
+<LinearLayout
+       android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.send.mst.addressbook.view.AddressBookUpDownActivity">
+        tools:context="com.send.mst.addressbook.view.AddressBookManagerActivity">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -16,13 +22,16 @@
                 android:id="@+id/button_upload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> addressBookManagerViewModel.onUploadClick()}"
                 android:text="@string/upload_button_text" />
 
         <Button
                 android:id="@+id/button_download"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> addressBookManagerViewModel.onDownloadClick()}"
                 android:text="@string/download_button_text" />
     </LinearLayout>
 
 </LinearLayout>
+</layout>

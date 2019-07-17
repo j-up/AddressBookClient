@@ -1,12 +1,9 @@
 package com.send.mst.addressbook.view
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 
 import android.os.Bundle
-import android.widget.EditText
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.send.mst.addressbook.R
@@ -26,18 +23,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
-        val mainViewModel:MainViewModel = MainViewModel()
+        val mainViewModel = MainViewModel()
 
         mainViewModel.editTextId.value = "test@test.com"
         mainViewModel.editTextPw.value = "test"
 
-        mainViewModel.onLoginClick.observe(this, Observer{ loginState ->
-            if(loginState) {
-                Utils.showMessage(applicationContext, tag, AppProp.STATUS_MESSAGE_LOGIN_SUCCESS.value)
-                intent=Intent(this, AddressBookUpDownActivity::class.java)
-                startActivity(intent)
-                // mainActivity.finish()
-            }
+        mainViewModel.onLoginClick.observe(this, Observer{
+            Utils.showMessage(applicationContext, tag, AppProp.STATUS_MESSAGE_LOGIN_SUCCESS.value+SingletonObject.idIndex)
+            intent=Intent(this, AddressBookManagerActivity::class.java)
+            startActivity(intent)
+            // mainActivity.finish()
         })
 
         mainViewModel.error.observe(this, Observer {
@@ -48,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             myDialog.createCustomDialog(this, R.layout.custom_dialog_signup)
         })
 
-        binding.viewModel=mainViewModel
+        binding.mainViewModel=mainViewModel
         binding.lifecycleOwner=this@MainActivity
     }
 }

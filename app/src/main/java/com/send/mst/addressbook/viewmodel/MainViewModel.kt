@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers
  **/
 // ToDo EditText 엔터키 클릭 이벤트
 class MainViewModel : ViewModel() {
-    private val _onLoginClick = SingleLiveEvent<Boolean>()
+    private val _onLoginClick = SingleLiveEvent<Int>()
     private val _onSignUpClick = SingleLiveEvent<Boolean>()
     private val _error = SingleLiveEvent<String>()
 
@@ -24,7 +24,7 @@ class MainViewModel : ViewModel() {
     var editTextPw = MutableLiveData<String>()
 
     val onSignUpClick: LiveData<Boolean> get() = _onSignUpClick
-    val onLoginClick: LiveData<Boolean> get() = _onLoginClick
+    val onLoginClick: LiveData<Int> get() = _onLoginClick
     val error: LiveData<String> get() = _error
 
     fun onSignUpClick() {
@@ -48,11 +48,8 @@ class MainViewModel : ViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                when(it) {
-                    AppPropInt.CODE_LOGIN_SUCCESS.value -> _onLoginClick.value = true
-
-                    else -> _error.value = AppProp.STATUS_MESSAGE_LOGIN_FAIL.value
-                }
+                SingletonObject.idIndex=it
+                _onLoginClick.value = it
             },{
                 _error.value = AppProp.STATUS_MESSAGE_LOGIN_FAIL.value
             })

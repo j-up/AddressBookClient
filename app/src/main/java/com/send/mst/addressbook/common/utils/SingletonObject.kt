@@ -3,6 +3,7 @@ package com.send.mst.addressbook.common.utils
 import android.os.Vibrator
 import com.send.mst.addressbook.common.network.api.ApiServer
 import com.send.mst.addressbook.common.network.interceptor.RetrofitInterceptor
+import com.send.mst.addressbook.model.AddressBookModel
 import com.send.mst.addressbook.model.UserModel
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -17,9 +18,13 @@ object SingletonObject {
     private val retrofit: Retrofit
 
     var vibrator: Vibrator? = null
+    var idIndex: Int? = null
+
     val apiServer: ApiServer
 
     lateinit var userModel: UserModel
+    lateinit var addressBookModel: AddressBookModel
+
 
 
     init {

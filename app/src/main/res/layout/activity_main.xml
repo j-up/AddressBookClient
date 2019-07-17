@@ -5,7 +5,7 @@
 
     <data>
         <variable
-                name="viewModel"
+                name="mainViewModel"
                 type="com.send.mst.addressbook.viewmodel.MainViewModel"/>
     </data>
 
@@ -43,7 +43,7 @@
                 android:id="@+id/editText_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={viewModel.editTextId}"
+                android:text="@={mainViewModel.editTextId}"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"/>
 
@@ -65,7 +65,7 @@
                 android:id="@+id/editText_pw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={viewModel.editTextPw}"
+                android:text="@={mainViewModel.editTextPw}"
                 android:inputType="textPassword">
         </EditText>
     </LinearLayout>
@@ -79,14 +79,14 @@
                 android:id="@+id/button_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onLoginClick()}"
+                android:onClick="@{() -> mainViewModel.onLoginClick()}"
                 android:text="@string/login_button_text"/>
 
         <Button
                 android:id="@+id/button_signUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onSignUpClick()}"
+                android:onClick="@{() -> mainViewModel.onSignUpClick()}"
                 android:text="@string/signUp_button_text"/>
 
     </LinearLayout>

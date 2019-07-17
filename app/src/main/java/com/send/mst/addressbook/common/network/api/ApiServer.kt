@@ -60,5 +60,5 @@ interface ApiServer {
     주소록
      */
     @POST("/addressBook/search")
-    fun getAddressBook(@Body addressBookModel: AddressBookModel) : Call<AddressBookListModel>
+    fun getAddressBook(@Body addressBookModel: AddressBookModel) : Single<AddressBookListModel>
 }
