@@ -121,6 +121,12 @@ class SignUpCustomDialog(val dialog: Dialog) {
         return true
     }
 
+    /**
+     * @author: JiMinLee
+     * @param:
+     * @return:
+     * @description: Email 중복검사 성공시 view 업데이트
+     **/
     private fun doEmailNotExistsSuccessEvent() {
         isExists = false
         dialogInputEmailEditText.isEnabled = false

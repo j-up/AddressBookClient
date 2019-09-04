@@ -14,7 +14,6 @@ import retrofit2.http.POST
  **/
 interface ApiServer {
 
-
     /**
      * @author: JiMinLee
      * @param: UserModel
@@ -24,19 +23,16 @@ interface ApiServer {
     @POST("/signUp")
     fun signUpPost(@Body userModel: UserModel) : Single<Int>
 
+
     /**
      * @author: JiMinLee
      * @param: UserModel
      * @return: Int
      * @description: 이메일 중복검사
      **/
-    /*
-    @Headers(
-        "Authorization: Basic amltaW46amltaW4x",
-        "Content-Type: application/json"
-    ) */
     @POST("/id/check/")
     fun idCheckPost(@Body userModel: UserModel) : Single<Int>
+
 
     /**
      * @author: JiMinLee
@@ -54,11 +50,24 @@ interface ApiServer {
 
 
 
-
-
     /*
     주소록
      */
+    /**
+    * @author: JiMinLee
+    * @param: AddressBookListModel
+    * @return: Int
+    * @description:
+    **/
+    @POST("/addressBook/register")
+    fun setAddressBook(@Body addressBookListModel: AddressBookListModel) : Single<Int>
+
+    /**
+    * @author: JiMinLee
+    * @param: AddressBookModel
+    * @return: AddressBookListModel
+    * @description: 주소록 조회
+    **/
     @POST("/addressBook/search")
     fun getAddressBook(@Body addressBookModel: AddressBookModel) : Single<AddressBookListModel>
 }

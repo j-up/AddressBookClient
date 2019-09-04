@@ -1,6 +1,5 @@
 package com.send.mst.addressbook.viewmodel
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
  * @desc
  **/
 // ToDo EditText 엔터키 클릭 이벤트
-class MainViewModel : ViewModel() {
+class MainViewModel() : ViewModel() {
     private val _onLoginClick = SingleLiveEvent<Int>()
     private val _onSignUpClick = SingleLiveEvent<Boolean>()
     private val _error = SingleLiveEvent<String>()
@@ -39,21 +38,19 @@ class MainViewModel : ViewModel() {
         doLogin()
     }
 
-
-
-    @SuppressLint("CheckResult")
     private fun doLogin() {
         SingletonObject.userModel = UserModel(editTextId.value,editTextPw.value)
-        SingletonObject.apiServer.loginPost(SingletonObject.userModel)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                SingletonObject.idIndex=it
-                _onLoginClick.value = it
-            },{
-                _error.value = AppProp.STATUS_MESSAGE_LOGIN_FAIL.value
-            })
+        SingletonObject.apiServer.run {
+            loginPost(SingletonObject.userModel)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    SingletonObject.idIndex = it
+                    _onLoginClick.value = it
+                }, {
+                    _error.value = AppProp.STATUS_MESSAGE_LOGIN_FAIL.value
+                })
+        }
     }
-
 
 }

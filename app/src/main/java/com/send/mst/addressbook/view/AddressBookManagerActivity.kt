@@ -1,18 +1,15 @@
 package com.send.mst.addressbook.view
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.send.mst.addressbook.R
 import com.send.mst.addressbook.common.utils.Utils
 import com.send.mst.addressbook.databinding.ActivityAddressBookManagerBinding
-import com.send.mst.addressbook.databinding.ActivityMainBinding
-import com.send.mst.addressbook.model.AddressBookModel
+import com.send.mst.addressbook.model.ContactRepository
 import com.send.mst.addressbook.viewmodel.AddressBookManagerViewModel
-import com.send.mst.addressbook.viewmodel.MainViewModel
 
 /**
  * @author JiMinLee
@@ -26,7 +23,12 @@ class AddressBookManagerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val binding = DataBindingUtil.setContentView<ActivityAddressBookManagerBinding>(this, R.layout.activity_address_book_manager)
-        val addressBookManagerViewModel = AddressBookManagerViewModel()
+        val contactRepository = ContactRepository(applicationContext)
+        val addressBookManagerViewModel = AddressBookManagerViewModel(contactRepository)
+
+        addressBookManagerViewModel.onUploadClick.observe(this, Observer{
+            Utils.showMessage(this,tag,"업로드 클릭")
+        })
 
         addressBookManagerViewModel.onDownloadClick.observe(this, Observer{
             Utils.showMessage(this,tag,"클릭")
@@ -38,6 +40,5 @@ class AddressBookManagerActivity : AppCompatActivity() {
 
         binding.addressBookManagerViewModel=addressBookManagerViewModel
         binding.lifecycleOwner=this@AddressBookManagerActivity
-
     }
 }

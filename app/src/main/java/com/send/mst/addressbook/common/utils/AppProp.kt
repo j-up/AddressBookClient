@@ -1,24 +1,16 @@
 package com.send.mst.addressbook.common.utils
 
-import android.os.Vibrator
-import com.send.mst.addressbook.common.network.api.ApiServer
-import com.send.mst.addressbook.common.network.interceptor.RetrofitInterceptor
-import com.send.mst.addressbook.model.UserModel
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
-
 /**
  * @author: JiMinLee
- * @description: 싱글톤과 상수(string)을 모아놓은 클래스
+ * @description: 상수를 모아놓은 클래스
  **/
 
 enum class AppProp(val value: String) {
 
     SERVER_ADDR("http://192.168.3.25:8080"),
 
-    HEADER_INTERCEPTOR("headerInterceptor"),
+    SHARED_PREFERENCES_FILE_NAME("prefs"),
+    SHARED_PREFERENCES_KEY_COOKIE(""),
     STATUS_MESSAGE_SING_UP_SUCCESS("회원가입 성공"),
     STATUS_MESSAGE_INPUT_IS_NULL("공백을 입력해주세요"),
     STATUS_MESSAGE_ALREADY_EXISTS_NO_CHECK("중복 검사를 실행하세요"),
@@ -34,9 +26,9 @@ enum class AppProp(val value: String) {
 }
 
 /**
-* @author: JiMinLee
-* @description: 상수(Int)를 모아놓은 클래스
-**/
+ * @author: JiMinLee
+ * @description: 상수를 모아놓은 클래스
+ **/
 enum class AppPropInt(val value: Int) {
     CODE_SING_UP_SUCCESS(1),
     CODE_ID_CHECK_SUCCESS(0),

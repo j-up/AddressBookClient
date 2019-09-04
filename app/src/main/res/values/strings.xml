@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AddressBookClient</string>
+    <string name="app_name">주소록</string>
     <string name="login_button_text">로그인</string>
     <string name="signUp_button_text">회원가입</string>
     <string name="upload_button_text">주소록 올리기</string>
